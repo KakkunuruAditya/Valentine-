@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Be My Valentine 💖</title>
+<title>Vaishnavi 💖</title>
 
 <style>
 *{box-sizing:border-box}
@@ -10,53 +10,73 @@
 body{
 margin:0;
 height:100vh;
-overflow:hidden;
 font-family:system-ui;
-background:radial-gradient(circle at top,#ff9aa2,#ff4d6d);
+background:radial-gradient(circle at top,#ffb3c6,#ff4d6d);
 display:flex;
 justify-content:center;
 align-items:center;
-perspective:1200px;
-color:white;
+overflow:hidden;
 }
 
-.card{
-background:rgba(255,255,255,.15);
+.container{
+width:90%;
+max-width:420px;
+background:rgba(255,255,255,.18);
 backdrop-filter:blur(20px);
-padding:40px;
-border-radius:25px;
+border-radius:30px;
+padding:40px 25px 60px;
 text-align:center;
 box-shadow:0 30px 80px rgba(0,0,0,.3);
-transform-style:preserve-3d;
-transition:.5s;
-min-width:280px;
+position:relative;
 }
 
-.card:hover{
-transform:rotateX(8deg) rotateY(-8deg) scale(1.05);
-}
-
-h1{margin:0 0 10px}
+h1{margin:0}
 p{opacity:.9}
 
+.buttons{
+margin-top:25px;
+display:flex;
+justify-content:space-between;
+gap:15px;
+position:relative;
+height:60px;
+}
+
 .btn{
-padding:14px 35px;
+flex:1;
+padding:14px 0;
 border:none;
 border-radius:40px;
 font-size:18px;
-margin:10px;
 cursor:pointer;
-transition:.3s;
-transform-style:preserve-3d;
+transition:.25s;
 }
 
 .btn:hover{
-transform:translateZ(40px) scale(1.1);
-box-shadow:0 20px 40px rgba(0,0,0,.4);
+transform:scale(1.08);
+box-shadow:0 15px 30px rgba(0,0,0,.3);
 }
 
-#yes{background:#00f5d4;color:#000}
-#no{background:#555;color:white;position:absolute}
+#yes{
+background:#00f5d4;
+color:#000;
+}
+
+#no{
+background:#555;
+color:white;
+position:absolute;
+right:0;
+top:0;
+width:48%;
+}
+
+.message{
+margin-top:15px;
+color:#fff;
+font-size:14px;
+min-height:18px;
+}
 
 .heart{
 position:fixed;
@@ -70,11 +90,11 @@ to{transform:translateY(-120vh);opacity:0}
 }
 
 .fade{
-animation:fade .6s;
+animation:fade .5s;
 }
 
 @keyframes fade{
-from{opacity:0;transform:scale(.8)}
+from{opacity:0;transform:scale(.9)}
 to{opacity:1;transform:scale(1)}
 }
 
@@ -88,6 +108,7 @@ to{opacity:1;transform:scale(1)}
 <script>
 
 let stage=0;
+let noCount=0;
 
 const app=document.getElementById("app");
 
@@ -97,77 +118,122 @@ const h=document.createElement("div");
 h.className="heart";
 h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
-h.style.fontSize=15+Math.random()*25+"px";
+h.style.fontSize=14+Math.random()*25+"px";
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),6000);
-},250);
+},280);
 }
 hearts();
 
-function page(html){
-app.innerHTML=`<div class="card fade">${html}</div>`;
+function show(html){
+app.innerHTML=`<div class="container fade">${html}</div>`;
 }
 
-page(`
-<h1>Hey You 😌</h1>
-<p>I built something special just for you…</p>
+start();
+
+function start(){
+show(`
+<h1>Hey Vaishnavi 😌</h1>
+<p>Oka chinna surprise… just for you 💖</p>
+
+<div class="buttons">
 <button class="btn" id="yes" onclick="next()">Continue</button>
+</div>
 `);
+}
 
 function next(){
 stage++;
+noCount=0;
 
 if(stage===1){
-page(`
-<h1>Quick Question 💭</h1>
-<p>Are you ready for something cute?</p>
-<button class="btn" id="yes" onclick="next()">Yes</button>
-<button class="btn" id="no">No</button>
+show(`
+<h1>Question Time 😳</h1>
+<p>Ready aa? Konchem cute undi idi…</p>
+
+<div class="buttons">
+<button class="btn" id="yes" onclick="next()">Ready 😄</button>
+<button class="btn" id="no">Not yet</button>
+</div>
+
+<div class="message" id="msg"></div>
 `);
-escapeNo();
+setupNo();
 }
 
 if(stage===2){
-page(`
-<h1>Important Decision 😳</h1>
-<p>Choose wisely… very wisely.</p>
-<button class="btn" id="yes" onclick="next()">I’m Ready</button>
-<button class="btn" id="no">Not Sure</button>
+show(`
+<h1>Serious Matter 🤭</h1>
+<p>Vaishnavi… konchem honest ga answer cheyyali 😌</p>
+
+<div class="buttons">
+<button class="btn" id="yes" onclick="next()">Okay tell 😅</button>
+<button class="btn" id="no">Skip</button>
+</div>
+
+<div class="message" id="msg"></div>
 `);
-escapeNo("Nice try 😏");
+setupNo();
 }
 
 if(stage===3){
-page(`
-<h1>Will You Be My Valentine? 💖</h1>
-<p>I promise laughs, care, and unlimited affection.</p>
-<button class="btn" id="yes" onclick="next()">YES 💕</button>
+show(`
+<h1>Will You Be My Valentine? 💕</h1>
+
+<p>
+Nenu promise chestunna…  
+mee smile responsibility naade 😌  
+mee happiness priority naade ❤️
+</p>
+
+<div class="buttons">
+<button class="btn" id="yes" onclick="next()">YES 💖</button>
 <button class="btn" id="no">NO</button>
+</div>
+
+<div class="message" id="msg"></div>
 `);
-escapeNo("No is disabled by love 😌");
+setupNo();
 }
 
 if(stage===4){
-page(`
+show(`
 <h1>YAYYYYY 🥰</h1>
-<p>Excellent choice.</p>
-<p>You just unlocked boyfriend premium edition ❤️</p>
 
-<!-- Add her photo below -->
-<!-- <img src="herphoto.jpg" width="220" style="border-radius:20px;margin-top:15px;"> -->
+<p>
+Smart choice Vaishnavi 😉<br>
+Ippudu officially naa Valentine ❤️
+</p>
+
+<p>
+Mee navvu = naa strength  
+Mee happiness = naa duty 😌
+</p>
 
 <h2>Happy Valentine’s Day 🌹</h2>
-<p>Thank you for choosing me.</p>
+
+<p>Thank you for choosing me 💖</p>
 `);
 }
 }
 
-function escapeNo(msg){
+function setupNo(){
 const no=document.getElementById("no");
+const box=document.querySelector(".buttons");
+const msg=document.getElementById("msg");
+
 no.onmouseover=()=>{
-if(msg)no.innerText=msg;
-no.style.left=Math.random()*(window.innerWidth-120)+"px";
-no.style.top=Math.random()*(window.innerHeight-60)+"px";
+noCount++;
+
+const bw=box.clientWidth-no.clientWidth;
+const bh=box.clientHeight-no.clientHeight;
+
+no.style.left=Math.random()*bw+"px";
+no.style.top=Math.random()*bh+"px";
+
+if(noCount>=2){
+msg.innerText="Haha 😏 tappinchukolevu… YES ae option!";
+}
 };
 }
 
